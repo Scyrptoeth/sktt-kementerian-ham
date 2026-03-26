@@ -23,12 +23,12 @@ export default function EssayInput({
 
   const wordColor =
     wordCount < 50
-      ? 'text-red-500'
+      ? 'text-danger'
       : wordCount < 150
-      ? 'text-orange-500'
+      ? 'text-warning'
       : wordCount >= 300
-      ? 'text-green-600'
-      : 'text-navy-600';
+      ? 'text-success'
+      : 'text-teal-soft-500';
 
   return (
     <div className="flex flex-col gap-2">
@@ -43,8 +43,8 @@ export default function EssayInput({
           resize-y transition-colors duration-200
           focus:outline-none focus:ring-2
           ${disabled
-            ? 'bg-gray-50 border-gray-200 text-gray-500 cursor-not-allowed'
-            : 'bg-white border-navy-200 text-gray-800 focus:border-navy-500 focus:ring-navy-200'
+            ? 'bg-bg-card border-sand-200 text-text-muted cursor-not-allowed'
+            : 'bg-white border-sand-300 text-text-primary focus:border-teal-soft-400 focus:ring-teal-soft-100 essay-textarea'
           }
         `}
         aria-label="Kolom jawaban esai"
@@ -54,9 +54,9 @@ export default function EssayInput({
           <span className={`font-medium ${wordColor}`}>
             {wordCount} kata
           </span>
-          <span className="text-gray-400">{charCount} karakter</span>
+          <span className="text-text-muted">{charCount} karakter</span>
         </div>
-        <div className="text-gray-400 text-xs">
+        <div className="text-text-muted text-xs">
           {wordCount < 150 ? 'Minimal 150 kata disarankan' : wordCount >= 300 ? 'Sangat baik!' : 'Kembangkan lebih lanjut'}
         </div>
       </div>

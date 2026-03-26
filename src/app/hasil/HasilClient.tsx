@@ -28,8 +28,8 @@ export default function HasilClient() {
 
   if (state.status !== 'completed' && state.status !== 'active') {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">Memuat hasil...</p>
+      <div className="min-h-screen flex items-center justify-center bg-bg-primary">
+        <p className="text-text-muted">Memuat hasil...</p>
       </div>
     );
   }
@@ -39,12 +39,19 @@ export default function HasilClient() {
   const maxScore = getMaxPossibleScore();
   const percentage = getOverallPercentage();
 
-  const scoreColor =
+  const scoreColorClass =
     percentage >= 80
-      ? '#16a34a'
+      ? 'text-success'
       : percentage >= 60
-      ? '#ca8a04'
-      : '#dc2626';
+      ? 'text-warning'
+      : 'text-danger';
+
+  const scoreBorderColor =
+    percentage >= 80
+      ? '#6B9E6B'
+      : percentage >= 60
+      ? '#D4A852'
+      : '#C97B6B';
 
   const scoreLabel =
     percentage >= 80
@@ -59,29 +66,35 @@ export default function HasilClient() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-bg-primary">
       {/* Header */}
-      <header style={{ backgroundColor: '#0f2244' }} className="text-white px-4 py-6">
-        <div className="max-w-3xl mx-auto text-center space-y-3">
-          <p className="text-sm" style={{ color: '#a5b8fc' }}>SKTT Kementerian HAM — Hasil Latihan</p>
-          <h1 className="text-2xl font-bold">Paket Latihan Selesai</h1>
+      <header
+        className="px-4 py-16"
+        style={{ background: 'linear-gradient(135deg, #C8D5C4 0%, #F5EFE5 40%, #F5E8E8 100%)' }}
+      >
+        <div className="max-w-3xl mx-auto text-center space-y-4">
+          <p className="text-sm text-text-secondary font-medium">SKTT Kementerian HAM — Hasil Latihan</p>
+          <h1 className="text-2xl font-bold text-text-primary">Paket Latihan Selesai</h1>
 
           {/* Score Circle */}
-          <div className="inline-flex flex-col items-center justify-center w-32 h-32 rounded-full bg-white border-4 mt-4" style={{ borderColor: scoreColor }}>
-            <span className="text-3xl font-bold" style={{ color: scoreColor }}>
+          <div
+            className="inline-flex flex-col items-center justify-center w-32 h-32 rounded-full bg-white border-4 mt-4 shadow-warm-md"
+            style={{ borderColor: scoreBorderColor }}
+          >
+            <span className={`text-3xl font-bold ${scoreColorClass}`}>
               {totalScore}
             </span>
-            <span className="text-gray-400 text-sm">dari {maxScore}</span>
+            <span className="text-text-muted text-sm">dari {maxScore}</span>
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <span className="text-2xl font-bold" style={{ color: scoreColor === '#16a34a' ? '#86efac' : scoreColor === '#ca8a04' ? '#fde68a' : '#fca5a5' }}>
+            <span className={`text-2xl font-bold ${scoreColorClass}`}>
               {percentage}%
             </span>
-            <span className="text-white font-medium">{scoreLabel}</span>
+            <span className="text-text-primary font-medium">{scoreLabel}</span>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-6 pt-2 text-sm" style={{ color: '#c7d7fe' }}>
+          <div className="flex flex-wrap justify-center gap-6 pt-2 text-sm text-text-secondary">
             <span>{results.length} soal dijawab</span>
             <span>{results.filter(r => r.score >= 4).length} soal mendalam/komprehensif</span>
             <span>{results.filter(r => r.score <= 1).length} soal perlu diperbaiki</span>
@@ -93,8 +106,7 @@ export default function HasilClient() {
       <div className="max-w-3xl mx-auto px-4 py-6 flex flex-wrap gap-3">
         <button
           onClick={handleReset}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white transition-colors"
-          style={{ backgroundColor: '#0f2244' }}
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white bg-teal-soft-600 hover:bg-teal-soft-500 transition-colors shadow-warm-sm"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -103,8 +115,7 @@ export default function HasilClient() {
         </button>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold border-2 transition-colors"
-          style={{ borderColor: '#0f2244', color: '#0f2244', backgroundColor: 'white' }}
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold border-2 border-sand-300 text-text-primary bg-white hover:bg-bg-secondary transition-colors"
         >
           Kembali ke Beranda
         </Link>
@@ -112,7 +123,7 @@ export default function HasilClient() {
 
       {/* Per-Question Results */}
       <div className="max-w-3xl mx-auto px-4 pb-12 space-y-8">
-        <h2 className="text-xl font-bold" style={{ color: '#0f2244' }}>
+        <h2 className="text-xl font-bold text-text-primary">
           Detail Per Soal
         </h2>
 
@@ -123,17 +134,17 @@ export default function HasilClient() {
           if (!result) return null;
 
           return (
-            <div key={question.id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <div key={question.id} className="bg-white rounded-xl border border-sand-200 shadow-warm-sm overflow-hidden">
               {/* Topic header */}
-              <div style={{ backgroundColor: '#f0f4ff', borderBottom: '1px solid #c7d7fe' }} className="px-6 py-4">
+              <div className="bg-bg-card border-b border-sand-200 px-6 py-4">
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#152d5a' }}>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
                       Topik {question.topicNumber}
                     </p>
-                    <h3 className="font-bold" style={{ color: '#0f2244' }}>{question.topicName}</h3>
+                    <h3 className="font-bold text-text-primary">{question.topicName}</h3>
                   </div>
-                  <TopicTag tag={question.topicTag} isEnglish={question.isEnglish} />
+                  <TopicTag tag={question.topicTag} isEnglish={question.isEnglish} topicNumber={question.topicNumber} />
                 </div>
               </div>
 
@@ -143,7 +154,7 @@ export default function HasilClient() {
 
                 {/* Auto-submit notice */}
                 {userAnswer?.isAutoSubmitted && (
-                  <div className="flex items-center gap-2 text-sm text-orange-600 bg-orange-50 border border-orange-200 rounded-lg px-3 py-2">
+                  <div className="flex items-center gap-2 text-sm text-warning bg-sand-50 border border-sand-300 rounded-lg px-3 py-2">
                     <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -152,24 +163,22 @@ export default function HasilClient() {
                 )}
 
                 {/* Scenario reminder */}
-                <div className="rounded-lg border p-3" style={{ backgroundColor: '#f8fafc', borderColor: '#e2e8f0' }}>
-                  <p className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-1">
-                    {question.isEnglish ? 'Pertanyaan' : 'Pertanyaan'}
+                <div className="rounded-lg border border-sand-200 p-3 bg-bg-card">
+                  <p className="text-xs font-bold uppercase tracking-wide text-text-muted mb-1">
+                    Pertanyaan
                   </p>
-                  <p className="text-gray-700 text-sm leading-relaxed">{question.question}</p>
+                  <p className="text-text-secondary text-sm leading-relaxed">{question.question}</p>
                 </div>
 
                 {/* Score label */}
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-gray-600">Nilai:</span>
+                  <span className="text-sm font-medium text-text-secondary">Nilai:</span>
                   <span
-                    className="text-sm font-bold"
-                    style={{
-                      color:
-                        result.score >= 4 ? '#16a34a' :
-                        result.score >= 3 ? '#ca8a04' :
-                        result.score >= 1 ? '#dc2626' : '#6b7280'
-                    }}
+                    className={`text-sm font-bold ${
+                      result.score >= 4 ? 'text-success' :
+                      result.score >= 3 ? 'text-warning' :
+                      result.score >= 1 ? 'text-danger' : 'text-text-muted'
+                    }`}
                   >
                     {result.score}/{result.maxScore} — {getScoreLabel(result.score)}
                   </span>

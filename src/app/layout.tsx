@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ExamProvider } from "@/context/ExamContext";
 
-const inter = Inter({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-dm-sans",
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "Latihan SKTT Kementerian HAM",
   description:
-    "Platform latihan Seleksi Kompetensi Teknis Tambahan (SKTT) Kementerian Hak Asasi Manusia Republik Indonesia. Berlatih menjawab soal esai berbasis kasus nyata.",
+    "Website latihan Seleksi Kompetensi Teknis Tambahan Kementerian Hak Asasi Manusia Republik Indonesia",
   keywords: [
     "SKTT",
     "Kementerian HAM",
@@ -28,8 +29,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-slate-50 text-gray-900">
+    <html lang="id" className={`${dmSans.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col bg-bg-primary text-text-primary font-sans">
         <ExamProvider>{children}</ExamProvider>
       </body>
     </html>

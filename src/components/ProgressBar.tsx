@@ -8,13 +8,13 @@ export default function ProgressBar({ current, total }: ProgressBarProps) {
 
   return (
     <div className="flex flex-col gap-1">
-      <div className="flex items-center justify-between text-sm font-medium text-navy-700">
+      <div className="flex items-center justify-between text-sm font-medium text-text-secondary">
         <span>Soal {current} dari {total}</span>
-        <span className="text-navy-500">{percent}%</span>
+        <span>{percent}%</span>
       </div>
-      <div className="w-full bg-navy-100 rounded-full h-2.5 overflow-hidden">
+      <div className="w-full bg-bg-card rounded-full h-2.5 overflow-hidden">
         <div
-          className="bg-navy-600 h-2.5 rounded-full transition-all duration-500 ease-out"
+          className="bg-teal-soft-400 h-2.5 rounded-full transition-all duration-500 ease-out"
           style={{ width: `${percent}%` }}
           role="progressbar"
           aria-valuenow={current}

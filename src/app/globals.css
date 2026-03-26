@@ -1,25 +1,109 @@
 @import "tailwindcss";
 
 @theme {
-  --color-navy-50: #f0f4ff;
-  --color-navy-100: #e0e8ff;
-  --color-navy-200: #c7d7fe;
-  --color-navy-300: #a5b8fc;
-  --color-navy-400: #7b95f8;
-  --color-navy-500: #1e3a6e;
-  --color-navy-600: #152d5a;
-  --color-navy-700: #0f2244;
-  --color-navy-800: #0a1830;
-  --color-navy-900: #060f1e;
+  /* Font */
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+
+  /* Background colors */
+  --color-bg-primary: #FAFAF8;
+  --color-bg-secondary: #F5F0EB;
+  --color-bg-card: #F0EDE8;
+
+  /* Sage */
+  --color-sage-50:  #F2F5F1;
+  --color-sage-100: #E5EBE3;
+  --color-sage-200: #C8D5C4;
+  --color-sage-300: #ABBFAA;
+  --color-sage-400: #8FAD8C;
+  --color-sage-500: #6B9B68;
+  --color-sage-600: #4A7A47;
+
+  /* Rose Dust */
+  --color-rose-dust-50:  #FAF4F4;
+  --color-rose-dust-100: #F5E8E8;
+  --color-rose-dust-200: #EDD0D0;
+  --color-rose-dust-300: #D4A5A5;
+  --color-rose-dust-400: #C08080;
+  --color-rose-dust-500: #A85E5E;
+
+  /* Sand */
+  --color-sand-50:  #FAF7F2;
+  --color-sand-100: #F5EFE5;
+  --color-sand-200: #EBE0CE;
+  --color-sand-300: #E8D5B7;
+  --color-sand-400: #D4BA8A;
+  --color-sand-500: #B8975A;
+
+  /* Lavender */
+  --color-lavender-100: #EDE8F5;
+  --color-lavender-200: #D8CEEB;
+  --color-lavender-300: #C5B9D4;
+  --color-lavender-400: #A896C2;
+
+  /* Teal Soft */
+  --color-teal-soft-100: #E8F2F0;
+  --color-teal-soft-200: #C8DDD9;
+  --color-teal-soft-300: #A8C8C0;
+  --color-teal-soft-400: #7AADA4;
+  --color-teal-soft-500: #4E8F85;
+  --color-teal-soft-600: #3B7269;
+
+  /* Text */
+  --color-text-primary:   #2D2D2D;
+  --color-text-secondary: #6B6B6B;
+  --color-text-muted:     #9A9A9A;
+
+  /* Semantic */
+  --color-success:      #6B9E6B;
+  --color-warning:      #D4A852;
+  --color-danger:       #C97B6B;
+  --color-danger-light: #F5E8E5;
+
+  /* Box shadows */
+  --shadow-warm-sm: 0 1px 3px rgba(45, 35, 25, 0.08);
+  --shadow-warm-md: 0 4px 12px rgba(45, 35, 25, 0.10);
+  --shadow-warm-lg: 0 8px 24px rgba(45, 35, 25, 0.12);
 }
 
 :root {
-  --background: #f8fafc;
-  --foreground: #1e293b;
+  --font-dm-sans: 'DM Sans', system-ui, sans-serif;
+  --bg-primary: #FAFAF8;
+  --bg-secondary: #F5F0EB;
+  --text-primary: #2D2D2D;
+  --text-secondary: #6B6B6B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-inter), system-ui, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Timer digit sizing agar tidak goyang saat countdown */
+.timer-digit {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Smooth color transitions */
+* {
+  transition-property: color, background-color, border-color;
+  transition-duration: 150ms;
+  transition-timing-function: ease;
+}
+
+/* Essay textarea readability */
+.essay-textarea {
+  line-height: 1.7;
+  letter-spacing: 0.01em;
 }

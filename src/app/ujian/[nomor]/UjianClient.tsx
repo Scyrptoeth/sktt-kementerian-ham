@@ -75,15 +75,15 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
   }, [question.id]);
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-bg-primary flex flex-col">
       {/* Header */}
-      <header style={{ backgroundColor: '#0f2244' }} className="text-white px-4 py-4">
+      <header className="bg-bg-secondary border-b border-sand-200 px-4 py-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <div>
-            <p className="text-xs font-medium" style={{ color: '#a5b8fc' }}>
+            <p className="text-xs font-medium text-text-muted">
               SKTT Kementerian HAM
             </p>
-            <h1 className="font-bold text-lg">Paket Latihan</h1>
+            <h1 className="font-bold text-lg text-text-primary">Paket Latihan</h1>
           </div>
           <Timer timeLeft={timeLeft} isRunning={isRunning} />
         </div>
@@ -94,45 +94,42 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
         <ProgressBar current={questionNumber} total={questions.length} />
 
         {/* Question Card */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-xl border border-sand-200 shadow-warm-sm overflow-hidden">
           {/* Topic Header */}
-          <div style={{ backgroundColor: '#f0f4ff', borderBottom: '1px solid #c7d7fe' }} className="px-6 py-4">
+          <div className="bg-bg-card border-b border-sand-200 px-6 py-4">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#152d5a' }}>
+                <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
                   Topik {question.topicNumber}
                 </p>
-                <h2 className="text-lg font-bold" style={{ color: '#0f2244' }}>
+                <h2 className="text-lg font-bold text-text-primary">
                   {question.topicName}
                 </h2>
               </div>
-              <TopicTag tag={question.topicTag} isEnglish={question.isEnglish} />
+              <TopicTag tag={question.topicTag} isEnglish={question.isEnglish} topicNumber={question.topicNumber} />
             </div>
           </div>
 
           <div className="px-6 py-5 space-y-5">
             {/* Scenario */}
-            <div
-              className="rounded-lg border p-4"
-              style={{ backgroundColor: '#f8fafc', borderColor: '#e2e8f0' }}
-            >
-              <p className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">
+            <div className="rounded-r-lg border-l-4 border-sage-300 bg-bg-card p-4">
+              <p className="text-xs font-bold uppercase tracking-wide text-text-muted mb-2">
                 {question.isEnglish ? 'Case Scenario' : 'Skenario Kasus'}
               </p>
-              <p className="text-gray-700 text-sm leading-relaxed">{question.scenario}</p>
+              <p className="text-text-secondary text-sm leading-relaxed">{question.scenario}</p>
             </div>
 
             {/* Question */}
             <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">
+              <p className="text-xs font-bold uppercase tracking-wide text-text-muted mb-2">
                 {question.isEnglish ? 'Question' : 'Pertanyaan'}
               </p>
-              <p className="text-gray-800 font-medium leading-relaxed">{question.question}</p>
+              <p className="text-text-primary font-medium leading-relaxed">{question.question}</p>
             </div>
 
             {/* Essay Input */}
             <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">
+              <p className="text-xs font-bold uppercase tracking-wide text-text-muted mb-2">
                 {question.isEnglish ? 'Your Answer' : 'Jawaban Anda'}
               </p>
               <EssayInput
@@ -149,7 +146,7 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
 
             {/* Submit Button */}
             <div className="flex items-center justify-between pt-2">
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-text-muted">
                 {submitted
                   ? 'Jawaban terkirim, melanjutkan...'
                   : 'Jawaban otomatis terkirim saat waktu habis'}
@@ -157,8 +154,7 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
               <button
                 onClick={() => handleSubmit(false)}
                 disabled={submitted}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ backgroundColor: submitted ? '#94a3b8' : '#0f2244' }}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white bg-teal-soft-600 hover:bg-teal-soft-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-warm-sm"
               >
                 {isLastQuestion
                   ? (question.isEnglish ? 'Submit & See Results' : 'Kirim & Lihat Hasil')

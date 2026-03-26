@@ -13,14 +13,14 @@ export default function BestAnswer({ question, userAnswer }: BestAnswerProps) {
 
   return (
     <div className="space-y-4 mt-4">
-      <div className="rounded-lg border border-gray-200 overflow-hidden">
+      <div className="rounded-lg border border-sand-200 overflow-hidden">
         <button
           onClick={() => setShowUser(!showUser)}
-          className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
+          className="w-full flex items-center justify-between px-4 py-3 bg-bg-card hover:bg-bg-secondary transition-colors text-left"
         >
-          <span className="font-medium text-gray-700">Jawaban Anda</span>
+          <span className="font-medium text-text-secondary">Jawaban Anda</span>
           <svg
-            className={`w-5 h-5 text-gray-500 transition-transform ${showUser ? 'rotate-180' : ''}`}
+            className={`w-5 h-5 text-text-muted transition-transform ${showUser ? 'rotate-180' : ''}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -29,22 +29,22 @@ export default function BestAnswer({ question, userAnswer }: BestAnswerProps) {
           </svg>
         </button>
         {showUser && (
-          <div className="px-4 py-3 text-gray-700 text-sm leading-relaxed whitespace-pre-wrap bg-white">
+          <div className="px-4 py-3 text-text-secondary text-sm leading-relaxed whitespace-pre-wrap bg-white">
             {userAnswer.trim() || (
-              <span className="text-gray-400 italic">Tidak ada jawaban</span>
+              <span className="text-text-muted italic">Tidak ada jawaban</span>
             )}
           </div>
         )}
       </div>
 
-      <div className="rounded-lg border border-green-200 overflow-hidden">
+      <div className="rounded-lg border border-sage-200 overflow-hidden">
         <button
           onClick={() => setShowBest(!showBest)}
-          className="w-full flex items-center justify-between px-4 py-3 bg-green-50 hover:bg-green-100 transition-colors text-left"
+          className="w-full flex items-center justify-between px-4 py-3 bg-sage-50 hover:bg-sage-100 transition-colors text-left"
         >
-          <span className="font-medium text-green-800">Jawaban Terbaik</span>
+          <span className="font-medium text-sage-600">Jawaban Terbaik</span>
           <svg
-            className={`w-5 h-5 text-green-600 transition-transform ${showBest ? 'rotate-180' : ''}`}
+            className={`w-5 h-5 text-sage-500 transition-transform ${showBest ? 'rotate-180' : ''}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -54,14 +54,14 @@ export default function BestAnswer({ question, userAnswer }: BestAnswerProps) {
         </button>
         {showBest && (
           <div className="px-4 py-3 space-y-3 bg-white">
-            <div className="text-sm text-green-900 leading-relaxed whitespace-pre-wrap">
+            <div className="text-sm text-text-primary leading-relaxed whitespace-pre-wrap">
               {question.bestAnswer}
             </div>
-            <div className="border-t border-green-100 pt-3">
-              <p className="text-xs font-semibold text-green-700 uppercase tracking-wide mb-1">
+            <div className="border-t border-sage-100 pt-3">
+              <p className="text-xs font-semibold text-sage-600 uppercase tracking-wide mb-1">
                 Mengapa jawaban ini terbaik:
               </p>
-              <p className="text-xs text-green-800 leading-relaxed">{question.explanation}</p>
+              <p className="text-xs text-text-secondary leading-relaxed">{question.explanation}</p>
             </div>
           </div>
         )}

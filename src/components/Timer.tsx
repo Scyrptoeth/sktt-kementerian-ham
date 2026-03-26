@@ -18,18 +18,18 @@ export default function Timer({ timeLeft, isRunning }: TimerProps) {
   return (
     <div
       className={`
-        inline-flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-lg font-bold
-        transition-colors duration-300
+        inline-flex items-center gap-2 px-4 py-2 rounded-lg text-lg
+        transition-colors duration-300 border-2
         ${isCritical
-          ? 'bg-red-100 text-red-700 border-2 border-red-500 animate-pulse'
+          ? 'bg-danger-light text-danger border-rose-dust-300 animate-pulse'
           : isWarning
-          ? 'bg-orange-100 text-orange-700 border-2 border-orange-400'
-          : 'bg-navy-50 text-navy-700 border-2 border-navy-200'
+          ? 'bg-rose-dust-100 text-rose-dust-500 border-rose-dust-300'
+          : 'bg-bg-secondary text-text-primary border-sand-300'
         }
       `}
     >
       <svg
-        className={`w-5 h-5 ${isCritical ? 'text-red-500' : isWarning ? 'text-orange-500' : 'text-navy-500'}`}
+        className={`w-5 h-5 ${isCritical ? 'text-danger' : isWarning ? 'text-rose-dust-400' : 'text-text-secondary'}`}
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -42,7 +42,7 @@ export default function Timer({ timeLeft, isRunning }: TimerProps) {
           d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
         />
       </svg>
-      <span>{formatTime(timeLeft)}</span>
+      <span className="font-bold timer-digit">{formatTime(timeLeft)}</span>
       {!isRunning && (
         <span className="text-xs font-normal opacity-60">(dijeda)</span>
       )}

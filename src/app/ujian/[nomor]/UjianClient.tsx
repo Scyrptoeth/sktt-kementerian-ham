@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Question } from '@/lib/types';
 import { useExam } from '@/context/ExamContext';
 import { questions } from '@/lib/questions';
+import { scoreAnswer } from '@/lib/scoring';
 import { useTimer } from '@/hooks/useTimer';
 import Timer from '@/components/Timer';
 import EssayInput from '@/components/EssayInput';
@@ -15,57 +16,110 @@ interface UjianClientProps {
   questionNumber: number;
 }
 
+type QuestionPhase = 'answering' | 'reviewed';
+
+function ScoreBadge({ score }: { score: number }) {
+  const colorClass =
+    score >= 4
+      ? 'bg-teal-soft-100 text-teal-soft-600 border-teal-soft-300'
+      : score >= 2
+      ? 'bg-sand-100 text-sand-500 border-sand-300'
+      : 'bg-danger-light text-danger border-rose-dust-300';
+
+  const label =
+    score === 5
+      ? 'Komprehensif'
+      : score === 4
+      ? 'Mendalam'
+      : score === 3
+      ? 'Cukup Baik'
+      : score === 2
+      ? 'Dasar'
+      : score === 1
+      ? 'Dangkal'
+      : 'Kosong';
+
+  return (
+    <div className={`rounded-xl border-2 px-6 py-4 flex items-center justify-between ${colorClass}`}>
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-wide opacity-70 mb-1">Skor Anda</p>
+        <p className="text-3xl font-bold">{score}/5</p>
+      </div>
+      <div className="text-right">
+        <p className="text-lg font-semibold">{label}</p>
+        <div className="flex gap-1 mt-1 justify-end">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div
+              key={i}
+              className={`w-5 h-2 rounded-full ${i <= score ? 'opacity-100' : 'opacity-20'}`}
+              style={{ backgroundColor: 'currentColor' }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function UjianClient({ question, questionNumber }: UjianClientProps) {
   const router = useRouter();
   const { state, submitAnswer, nextQuestion, startExam } = useExam();
   const [answerText, setAnswerText] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+  const [questionPhase, setQuestionPhase] = useState<QuestionPhase>('answering');
+  const [submittedScore, setSubmittedScore] = useState<number>(0);
+  const [frozenTimeLeft, setFrozenTimeLeft] = useState<number | null>(null);
 
   const isLastQuestion = questionNumber === questions.length;
 
-  // Sync exam state when navigating to this page
+  // Sync exam state when navigating to this question
   useEffect(() => {
     if (state.status === 'idle') {
       startExam();
     }
-    // Reset local answer state for this question
-    const existingAnswer = state.answers.find(a => a.questionId === question.id);
+    // Reset phase for new question
+    const existingAnswer = state.answers.find((a) => a.questionId === question.id);
     if (existingAnswer) {
       setAnswerText(existingAnswer.text);
-      setSubmitted(true);
+      setSubmittedScore(existingAnswer.score);
+      setQuestionPhase('reviewed');
     } else {
       setAnswerText('');
-      setSubmitted(false);
+      setSubmittedScore(0);
+      setFrozenTimeLeft(null);
+      setQuestionPhase('answering');
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [question.id]);
 
   const handleSubmit = useCallback(
     (isAuto = false) => {
-      if (submitted) return;
-      setSubmitted(true);
-      submitAnswer(answerText, isAuto);
+      if (questionPhase === 'reviewed') return;
 
-      setTimeout(() => {
-        if (isLastQuestion) {
-          nextQuestion();
-          router.push('/hasil');
-        } else {
-          nextQuestion();
-          router.push(`/ujian/${questionNumber + 1}`);
-        }
-      }, 200);
+      // Calculate score before submitting so we can display it immediately
+      const draftAnswer = {
+        questionId: question.id,
+        text: answerText,
+        score: 0,
+        submittedAt: new Date(),
+        isAutoSubmitted: isAuto,
+      };
+      const scored = scoreAnswer(draftAnswer, question);
+
+      submitAnswer(answerText, isAuto);
+      setSubmittedScore(scored.score);
+      setQuestionPhase('reviewed');
     },
-    [submitted, answerText, submitAnswer, isLastQuestion, nextQuestion, router, questionNumber]
+    [questionPhase, answerText, submitAnswer, question]
   );
 
   const handleExpire = useCallback(() => {
-    if (!submitted) {
+    if (questionPhase !== 'reviewed') {
+      setFrozenTimeLeft(0);
       handleSubmit(true);
     }
-  }, [submitted, handleSubmit]);
+  }, [questionPhase, handleSubmit]);
 
-  const { timeLeft, isRunning, start, reset } = useTimer(question.timeLimit, handleExpire);
+  const { timeLeft, isRunning, start, stop, reset } = useTimer(question.timeLimit, handleExpire);
 
   // Start timer when question loads
   useEffect(() => {
@@ -73,6 +127,26 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
     setTimeout(() => start(), 100);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [question.id]);
+
+  // Stop timer when phase changes to reviewed
+  useEffect(() => {
+    if (questionPhase === 'reviewed') {
+      setFrozenTimeLeft((prev) => (prev !== null ? prev : timeLeft));
+      stop();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [questionPhase]);
+
+  const handleNext = useCallback(() => {
+    nextQuestion();
+    if (isLastQuestion) {
+      router.push('/hasil');
+    } else {
+      router.push(`/ujian/${questionNumber + 1}`);
+    }
+  }, [nextQuestion, isLastQuestion, router, questionNumber]);
+
+  const displayTimeLeft = questionPhase === 'reviewed' ? (frozenTimeLeft ?? timeLeft) : timeLeft;
 
   return (
     <div className="min-h-screen bg-bg-primary flex flex-col">
@@ -85,7 +159,35 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
             </p>
             <h1 className="font-bold text-lg text-text-primary">Paket Latihan</h1>
           </div>
-          <Timer timeLeft={timeLeft} isRunning={isRunning} />
+          {questionPhase === 'answering' ? (
+            <Timer timeLeft={timeLeft} isRunning={isRunning} />
+          ) : (
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-lg transition-colors duration-300 border-2 bg-bg-secondary text-text-primary border-sand-300">
+              <svg
+                className="w-5 h-5 text-text-secondary"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span className="font-bold timer-digit">
+                {displayTimeLeft === 0
+                  ? 'Waktu selesai'
+                  : (() => {
+                      const m = Math.floor(displayTimeLeft / 60);
+                      const s = displayTimeLeft % 60;
+                      return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                    })()}
+              </span>
+            </div>
+          )}
         </div>
       </header>
 
@@ -135,7 +237,7 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
               <EssayInput
                 value={answerText}
                 onChange={setAnswerText}
-                disabled={submitted}
+                disabled={questionPhase === 'reviewed'}
                 placeholder={
                   question.isEnglish
                     ? 'Write your essay answer here... (minimum 150 words recommended)'
@@ -144,26 +246,76 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
               />
             </div>
 
-            {/* Submit Button */}
-            <div className="flex items-center justify-between pt-2">
-              <p className="text-xs text-text-muted">
-                {submitted
-                  ? 'Jawaban terkirim, melanjutkan...'
-                  : 'Jawaban otomatis terkirim saat waktu habis'}
-              </p>
-              <button
-                onClick={() => handleSubmit(false)}
-                disabled={submitted}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white bg-teal-soft-600 hover:bg-teal-soft-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-warm-sm"
-              >
-                {isLastQuestion
-                  ? (question.isEnglish ? 'Submit & See Results' : 'Kirim & Lihat Hasil')
-                  : (question.isEnglish ? 'Submit & Next' : 'Kirim Jawaban & Lanjut')}
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </button>
-            </div>
+            {/* FASE ANSWERING: Submit Button */}
+            {questionPhase === 'answering' && (
+              <div className="flex items-center justify-between pt-2">
+                <p className="text-xs text-text-muted">
+                  Jawaban otomatis terkirim saat waktu habis
+                </p>
+                <button
+                  onClick={() => handleSubmit(false)}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white bg-teal-soft-600 hover:bg-teal-soft-500 transition-all duration-200 shadow-warm-sm"
+                >
+                  {isLastQuestion
+                    ? (question.isEnglish ? 'Submit & See Results' : 'Kirim Jawaban & Lanjut')
+                    : (question.isEnglish ? 'Submit & Next' : 'Kirim Jawaban & Lanjut')}
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </button>
+              </div>
+            )}
+
+            {/* FASE REVIEWED: Score + Best Answer + Pembahasan + Next Button */}
+            {questionPhase === 'reviewed' && (
+              <div className="space-y-4 pt-2">
+                {/* Score Badge */}
+                <ScoreBadge score={submittedScore} />
+
+                {/* Best Answer */}
+                <div className="rounded-lg border border-sage-200 overflow-hidden">
+                  <div className="px-4 py-3 bg-sage-50 border-b border-sage-200">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-sage-600">
+                      {question.isEnglish ? 'Best Answer' : 'Jawaban Terbaik'}
+                    </p>
+                  </div>
+                  <div className="px-4 py-4 bg-white">
+                    <p className="text-sm text-text-primary leading-relaxed whitespace-pre-wrap">
+                      {question.bestAnswer}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Pembahasan */}
+                <div className="rounded-lg border border-sand-200 overflow-hidden">
+                  <div className="px-4 py-3 bg-bg-card border-b border-sand-200">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
+                      {question.isEnglish ? 'Explanation' : 'Pembahasan'}
+                    </p>
+                  </div>
+                  <div className="px-4 py-4 bg-bg-card">
+                    <p className="text-sm text-text-secondary leading-relaxed">
+                      {question.explanation}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Next Button */}
+                <div className="flex justify-end pt-2">
+                  <button
+                    onClick={handleNext}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white bg-teal-soft-600 hover:bg-teal-soft-500 transition-all duration-200 shadow-warm-sm"
+                  >
+                    {isLastQuestion
+                      ? (question.isEnglish ? 'See Full Results →' : 'Lihat Hasil Lengkap →')
+                      : (question.isEnglish ? 'Next Question →' : 'Lanjut ke Soal Berikutnya →')}
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </main>

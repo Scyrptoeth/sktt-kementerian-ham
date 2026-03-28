@@ -155,15 +155,6 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
       <header className="bg-bg-secondary border-b border-sand-200 px-4 py-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-card border border-sand-200 hover:border-sand-300 transition-all duration-150"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-              </svg>
-              Beranda
-            </Link>
             <div>
               <p className="text-xs font-medium text-text-muted">
                 SKTT Kementerian HAM
@@ -312,27 +303,29 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
                   </div>
                 </div>
 
-                {/* Materi link */}
-                {submittedScore <= 3 && (
-                  <div className="flex items-center gap-3 bg-teal-soft-50 border border-teal-soft-200 rounded-xl px-4 py-3">
-                    <span className="text-lg">📖</span>
-                    <div className="flex-1 text-sm">
-                      <span className="text-text-secondary">
-                        {question.isEnglish
-                          ? 'Want to strengthen your understanding? '
-                          : 'Ingin memperdalam pemahaman? '}
-                      </span>
-                      <Link
-                        href={`/materi/${question.topicNumber}`}
-                        className="text-teal-soft-600 font-medium hover:underline"
-                      >
-                        {question.isEnglish
-                          ? 'Study the material for this topic →'
-                          : 'Pelajari materi topik ini →'}
-                      </Link>
-                    </div>
+                {/* Materi link — always shown, contextual message based on score */}
+                <div className={`flex items-center gap-3 rounded-xl px-4 py-3 border ${
+                  submittedScore >= 4
+                    ? 'bg-sage-50 border-sage-200'
+                    : 'bg-teal-soft-50 border-teal-soft-200'
+                }`}>
+                  <span className="text-lg">📖</span>
+                  <div className="flex-1 text-sm">
+                    <span className="text-text-secondary">
+                      {submittedScore >= 4
+                        ? (question.isEnglish ? 'Consolidate your knowledge: ' : 'Konsolidasi pemahaman Anda: ')
+                        : (question.isEnglish ? 'Want to strengthen your understanding? ' : 'Ingin memperdalam pemahaman? ')}
+                    </span>
+                    <Link
+                      href={`/materi/${question.topicNumber}`}
+                      className={`font-medium hover:underline ${submittedScore >= 4 ? 'text-sage-600' : 'text-teal-soft-600'}`}
+                    >
+                      {submittedScore >= 4
+                        ? (question.isEnglish ? 'Review this topic\'s material →' : 'Review materi topik ini →')
+                        : (question.isEnglish ? 'Study the material for this topic →' : 'Pelajari materi topik ini →')}
+                    </Link>
                   </div>
-                )}
+                </div>
 
                 {/* Next Button */}
                 <div className="flex justify-end pt-2">

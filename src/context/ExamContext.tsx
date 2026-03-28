@@ -1,5 +1,5 @@
 'use client';
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer, useState, useEffect, ReactNode } from 'react';
 import { ExamState, Answer } from '@/lib/types';
 import { questions } from '@/lib/questions';
 import { scoreAnswer } from '@/lib/scoring';
@@ -8,7 +8,8 @@ type ExamAction =
   | { type: 'START_EXAM' }
   | { type: 'SUBMIT_ANSWER'; payload: { text: string; isAutoSubmitted: boolean } }
   | { type: 'NEXT_QUESTION' }
-  | { type: 'RESET_EXAM' };
+  | { type: 'RESET_EXAM' }
+  | { type: 'HYDRATE'; payload: ExamState };
 
 interface ExamContextValue {
   state: ExamState;
@@ -29,8 +30,53 @@ const initialState: ExamState = {
   completedAt: null,
 };
 
+const STORAGE_KEY = 'sktt-exam-state';
+
+function saveState(state: ExamState): void {
+  try {
+    const serializable = {
+      ...state,
+      startedAt: state.startedAt?.toISOString() ?? null,
+      completedAt: state.completedAt?.toISOString() ?? null,
+      answers: state.answers.map(a => ({
+        ...a,
+        submittedAt: a.submittedAt instanceof Date ? a.submittedAt.toISOString() : a.submittedAt,
+      })),
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(serializable));
+  } catch {
+    // Silently fail if localStorage unavailable
+  }
+}
+
+function loadState(): ExamState | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return {
+      ...parsed,
+      startedAt: parsed.startedAt ? new Date(parsed.startedAt) : null,
+      completedAt: parsed.completedAt ? new Date(parsed.completedAt) : null,
+      answers: (parsed.answers ?? []).map((a: Record<string, unknown>) => ({
+        ...a,
+        submittedAt: new Date(a.submittedAt as string),
+      })),
+    };
+  } catch {
+    return null;
+  }
+}
+
+function clearState(): void {
+  try { localStorage.removeItem(STORAGE_KEY); } catch {}
+}
+
 function examReducer(state: ExamState, action: ExamAction): ExamState {
   switch (action.type) {
+    case 'HYDRATE':
+      return action.payload;
+
     case 'START_EXAM':
       return {
         ...initialState,
@@ -89,6 +135,23 @@ const ExamContext = createContext<ExamContextValue | null>(null);
 
 export function ExamProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(examReducer, initialState);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Load saved state on mount (client-side only)
+  useEffect(() => {
+    const saved = loadState();
+    if (saved && saved.status !== 'idle') {
+      dispatch({ type: 'HYDRATE', payload: saved });
+    }
+    setIsHydrated(true);
+  }, []);
+
+  // Persist state to localStorage after every change (only after hydration)
+  useEffect(() => {
+    if (isHydrated) {
+      saveState(state);
+    }
+  }, [state, isHydrated]);
 
   const currentQuestion =
     state.currentQuestionIndex < questions.length
@@ -105,7 +168,10 @@ export function ExamProvider({ children }: { children: ReactNode }) {
 
   const nextQuestion = () => dispatch({ type: 'NEXT_QUESTION' });
 
-  const resetExam = () => dispatch({ type: 'RESET_EXAM' });
+  const resetExam = () => {
+    clearState();
+    dispatch({ type: 'RESET_EXAM' });
+  };
 
   return (
     <ExamContext.Provider

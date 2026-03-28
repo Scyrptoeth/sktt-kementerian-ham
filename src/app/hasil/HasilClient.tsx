@@ -67,21 +67,6 @@ export default function HasilClient() {
 
   return (
     <div className="min-h-screen bg-bg-primary">
-      {/* Top Nav */}
-      <nav className="bg-bg-secondary border-b border-sand-200 px-4 py-3">
-        <div className="max-w-3xl mx-auto">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-card border border-sand-200 hover:border-sand-300 transition-all duration-150"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
-            Beranda
-          </Link>
-        </div>
-      </nav>
-
       {/* Header */}
       <header
         className="px-4 py-16"
@@ -199,19 +184,25 @@ export default function HasilClient() {
                   </span>
                 </div>
 
-                {/* Materi link for low scores */}
-                {result.score <= 3 && (
-                  <Link
-                    href={`/materi/${question.topicNumber}`}
-                    className="flex items-center gap-2.5 bg-teal-soft-50 border border-teal-soft-200 rounded-lg px-4 py-2.5 text-sm hover:bg-teal-soft-100 transition-colors"
-                  >
-                    <span>📖</span>
-                    <span className="text-text-secondary">
-                      Pelajari materi topik ini untuk meningkatkan pemahaman
-                    </span>
-                    <span className="text-teal-soft-600 font-medium ml-auto flex-shrink-0">Belajar →</span>
-                  </Link>
-                )}
+                {/* Materi link — always shown, contextual message based on score */}
+                <Link
+                  href={`/materi/${question.topicNumber}`}
+                  className={`flex items-center gap-2.5 rounded-lg px-4 py-2.5 text-sm transition-colors border ${
+                    result.score >= 4
+                      ? 'bg-sage-50 border-sage-200 hover:bg-sage-100'
+                      : 'bg-teal-soft-50 border-teal-soft-200 hover:bg-teal-soft-100'
+                  }`}
+                >
+                  <span>📖</span>
+                  <span className="text-text-secondary">
+                    {result.score >= 4
+                      ? 'Review dan konsolidasi pemahaman topik ini'
+                      : 'Pelajari materi topik ini untuk meningkatkan pemahaman'}
+                  </span>
+                  <span className={`font-medium ml-auto flex-shrink-0 ${result.score >= 4 ? 'text-sage-600' : 'text-teal-soft-600'}`}>
+                    {result.score >= 4 ? 'Review →' : 'Belajar →'}
+                  </span>
+                </Link>
 
                 {/* Best Answer Comparison */}
                 <BestAnswer

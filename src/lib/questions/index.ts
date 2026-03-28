@@ -17,8 +17,8 @@ const packetMap: Record<PacketId, Question[]> = {
 
 export const packetInfoList: PacketInfo[] = [
   { id: 1, name: 'Paket 1', description: 'Studi kasus utama HAM Indonesia', questionCount: 12, isAvailable: true },
-  { id: 2, name: 'Paket 2', description: 'Studi kasus lanjutan HAM Indonesia', questionCount: 12, isAvailable: false },
-  { id: 3, name: 'Paket 3', description: 'Studi kasus kontemporer HAM Indonesia', questionCount: 12, isAvailable: false },
+  { id: 2, name: 'Paket 2', description: 'Studi kasus lanjutan HAM Indonesia', questionCount: 12, isAvailable: true },
+  { id: 3, name: 'Paket 3', description: 'Studi kasus kontemporer HAM Indonesia', questionCount: 12, isAvailable: true },
   { id: 4, name: 'Paket 4', description: 'Studi kasus historis HAM Indonesia', questionCount: 12, isAvailable: false },
   { id: 5, name: 'Paket 5', description: 'Studi kasus tematik HAM Indonesia', questionCount: 12, isAvailable: false },
 ];

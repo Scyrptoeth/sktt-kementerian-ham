@@ -4,6 +4,8 @@ import { paket2Questions } from './paket-2';
 import { paket3Questions } from './paket-3';
 import { paket4Questions } from './paket-4';
 import { paket5Questions } from './paket-5';
+import { paket6Questions } from './paket-6';
+import { paket7Questions } from './paket-7';
 
 // ─── Packet Registry ──────────────────────────────────────────────────────────
 
@@ -13,6 +15,8 @@ const packetMap: Record<PacketId, Question[]> = {
   3: paket3Questions,
   4: paket4Questions,
   5: paket5Questions,
+  6: paket6Questions,
+  7: paket7Questions,
 };
 
 export const packetInfoList: PacketInfo[] = [
@@ -21,6 +25,8 @@ export const packetInfoList: PacketInfo[] = [
   { id: 3, name: 'Paket 3', description: 'Studi kasus kontemporer HAM Indonesia', questionCount: 12, isAvailable: true },
   { id: 4, name: 'Paket 4', description: 'Studi kasus historis HAM Indonesia', questionCount: 12, isAvailable: true },
   { id: 5, name: 'Paket 5', description: 'Studi kasus tematik HAM Indonesia', questionCount: 12, isAvailable: true },
+  { id: 6, name: 'Paket 6', description: 'Studi kasus digital dan ekologis HAM Indonesia', questionCount: 12, isAvailable: true },
+  { id: 7, name: 'Paket 7', description: 'Studi kasus struktural dan kelompok marjinal HAM Indonesia', questionCount: 12, isAvailable: true },
 ];
 
 // ─── Helper Functions ─────────────────────────────────────────────────────────
@@ -67,3 +73,5 @@ export { paket2Questions } from './paket-2';
 export { paket3Questions } from './paket-3';
 export { paket4Questions } from './paket-4';
 export { paket5Questions } from './paket-5';
+export { paket6Questions } from './paket-6';
+export { paket7Questions } from './paket-7';

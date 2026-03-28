@@ -14,7 +14,7 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: "Latihan SKTT Kementerian HAM",
   description:
-    "Platform latihan Seleksi Kompetensi Teknis Tambahan Kementerian HAM RI. 60 soal esai (5 paket) berbasis kasus nyata, skor otomatis, pembahasan langsung.",
+    "Platform latihan Seleksi Kompetensi Teknis Tambahan Kementerian HAM RI. 84 soal esai (7 paket) berbasis kasus nyata, skor otomatis, pembahasan langsung.",
   keywords: [
     "SKTT",
     "Kementerian HAM",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Latihan SKTT Kementerian HAM",
     description:
-      "60 soal esai (5 paket) berbasis kasus nyata · skor otomatis · pembahasan langsung. Persiapkan SKTT Kementerian HAM RI.",
+      "84 soal esai (7 paket) berbasis kasus nyata · skor otomatis · pembahasan langsung. Persiapkan SKTT Kementerian HAM RI.",
     url: "https://projek-sktt-kementerian-ham.vercel.app",
     siteName: "Latihan SKTT Kementerian HAM",
     locale: "id_ID",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Latihan SKTT Kementerian HAM",
     description:
-      "60 soal esai (5 paket) berbasis kasus nyata · skor otomatis · pembahasan langsung.",
+      "84 soal esai (7 paket) berbasis kasus nyata · skor otomatis · pembahasan langsung.",
   },
 };
 

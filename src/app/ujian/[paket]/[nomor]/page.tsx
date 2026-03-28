@@ -12,7 +12,7 @@ export default async function UjianPage({ params }: Props) {
   const packetId = parseInt(paket, 10) as PacketId;
   const questionNumber = parseInt(nomor, 10);
 
-  if (isNaN(packetId) || packetId < 1 || packetId > 5) {
+  if (isNaN(packetId) || packetId < 1 || !packetInfoList.find(p => p.id === packetId)) {
     notFound();
   }
 

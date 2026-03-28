@@ -94,7 +94,7 @@ export default function PanduanEsaiClient() {
         </div>
 
         {/* Main content */}
-        <main className="flex-1 min-w-0 pb-20 lg:pb-0">
+        <main id="main-content" className="flex-1 min-w-0 pb-20 lg:pb-0">
           {/* Structure section */}
           {activeSection === 'structure' && (
             <div className="space-y-6">

@@ -8,7 +8,7 @@ const FORMATS = ['Penjelasan', 'Flashcard', 'Panduan Esai', 'Glosarium', 'Ringka
 
 export default function MateriHub() {
   return (
-    <main className="min-h-screen bg-bg-primary">
+    <main id="main-content" className="min-h-screen bg-bg-primary">
       {/* Hero */}
       <section
         className="py-16 px-4"

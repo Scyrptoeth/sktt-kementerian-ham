@@ -4,7 +4,7 @@ import TopicTag from '@/components/TopicTag';
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-bg-primary">
+    <main id="main-content" className="min-h-screen bg-bg-primary">
       {/* Hero Section */}
       <section
         className="py-20 px-4"

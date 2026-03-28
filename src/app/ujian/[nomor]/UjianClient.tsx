@@ -138,6 +138,17 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questionPhase]);
 
+  // Warn user before leaving with unsaved answer
+  useEffect(() => {
+    const shouldWarn = questionPhase === 'answering' && answerText.trim().length > 0;
+    if (!shouldWarn) return;
+    function handleBeforeUnload(e: BeforeUnloadEvent) {
+      e.preventDefault();
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [questionPhase, answerText]);
+
   const handleNext = useCallback(() => {
     nextQuestion();
     if (isLastQuestion) {
@@ -194,7 +205,7 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
         </div>
       </header>
 
-      <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-6 space-y-6">
+      <main id="main-content" className="flex-1 max-w-3xl mx-auto w-full px-4 py-6 space-y-6">
         {/* Progress */}
         <ProgressBar current={questionNumber} total={questions.length} />
 

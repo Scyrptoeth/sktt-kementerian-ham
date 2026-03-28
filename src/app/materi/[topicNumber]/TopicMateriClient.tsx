@@ -147,7 +147,7 @@ export default function TopicMateriClient({
         </aside>
 
         {/* ── Main content ── */}
-        <main className="flex-1 min-w-0 px-4 lg:px-8 py-6">
+        <main id="main-content" className="flex-1 min-w-0 px-4 lg:px-8 py-6">
           {/* Topic header */}
           <div className="mb-6 space-y-2">
             <div className="flex items-start gap-3 flex-wrap">

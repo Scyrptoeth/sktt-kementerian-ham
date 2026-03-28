@@ -66,7 +66,7 @@ export default function HasilClient() {
   };
 
   return (
-    <div className="min-h-screen bg-bg-primary">
+    <div id="main-content" className="min-h-screen bg-bg-primary">
       {/* Header */}
       <header
         className="px-4 py-16"

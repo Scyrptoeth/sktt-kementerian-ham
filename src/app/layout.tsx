@@ -12,6 +12,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://projek-sktt-kementerian-ham.vercel.app'),
   title: "Latihan SKTT Kementerian HAM",
   description:
     "Platform latihan Seleksi Kompetensi Teknis Tambahan Kementerian HAM RI. 120 soal esai (10 paket) berbasis kasus nyata, skor otomatis, pembahasan langsung.",

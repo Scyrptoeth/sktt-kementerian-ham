@@ -5,6 +5,7 @@ interface EssayInputProps {
   onChange: (value: string) => void;
   disabled?: boolean;
   placeholder?: string;
+  isEnglish?: boolean;
 }
 
 function countWords(text: string): number {
@@ -16,8 +17,11 @@ export default function EssayInput({
   value,
   onChange,
   disabled = false,
-  placeholder = 'Tulis jawaban Anda di sini...',
+  placeholder,
+  isEnglish = false,
 }: EssayInputProps) {
+  const defaultPlaceholder = isEnglish ? 'Write your answer here...' : 'Tulis jawaban Anda di sini...';
+  const resolvedPlaceholder = placeholder ?? defaultPlaceholder;
   const wordCount = countWords(value);
   const charCount = value.length;
 
@@ -36,7 +40,7 @@ export default function EssayInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
-        placeholder={placeholder}
+        placeholder={resolvedPlaceholder}
         rows={14}
         className={`
           w-full px-4 py-3 rounded-lg border-2 font-sans text-base leading-relaxed
@@ -47,17 +51,20 @@ export default function EssayInput({
             : 'bg-white border-sand-300 text-text-primary focus:border-teal-soft-400 focus:ring-teal-soft-100 essay-textarea'
           }
         `}
-        aria-label="Kolom jawaban esai"
+        aria-label={isEnglish ? 'Essay answer field' : 'Kolom jawaban esai'}
       />
       <div className="flex items-center justify-between text-sm px-1">
         <div className="flex gap-4">
           <span className={`font-medium ${wordColor}`}>
-            {wordCount} kata
+            {wordCount} {isEnglish ? 'words' : 'kata'}
           </span>
-          <span className="text-text-muted">{charCount} karakter</span>
+          <span className="text-text-muted">{charCount} {isEnglish ? 'characters' : 'karakter'}</span>
         </div>
         <div className="text-text-muted text-xs">
-          {wordCount < 150 ? 'Minimal 150 kata disarankan' : wordCount >= 300 ? 'Sangat baik!' : 'Kembangkan lebih lanjut'}
+          {isEnglish
+            ? (wordCount < 150 ? 'Minimum 150 words recommended' : wordCount >= 300 ? 'Excellent!' : 'Develop further')
+            : (wordCount < 150 ? 'Minimal 150 kata disarankan' : wordCount >= 300 ? 'Sangat baik!' : 'Kembangkan lebih lanjut')
+          }
         </div>
       </div>
     </div>

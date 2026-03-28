@@ -17,6 +17,9 @@ export default function Timer({ timeLeft, isRunning }: TimerProps) {
 
   return (
     <div
+      role="timer"
+      aria-live="polite"
+      aria-label={`Sisa waktu ${formatTime(timeLeft)}`}
       className={`
         inline-flex items-center gap-2 px-4 py-2 rounded-lg text-lg
         transition-colors duration-300 border-2

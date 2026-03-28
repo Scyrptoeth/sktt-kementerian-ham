@@ -254,11 +254,7 @@ export default function UjianClient({ question, questionNumber, packetId, totalQ
                 value={answerText}
                 onChange={setAnswerText}
                 disabled={questionPhase === 'reviewed'}
-                placeholder={
-                  question.isEnglish
-                    ? 'Write your essay answer here... (minimum 150 words recommended)'
-                    : 'Tulis jawaban esai Anda di sini... (minimal 150 kata dianjurkan)'
-                }
+                isEnglish={question.isEnglish}
               />
             </div>
 

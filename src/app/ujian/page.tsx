@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useExam } from '@/context/ExamContext';
-import { packetInfoList } from '@/lib/questions';
+import { packetInfoList, getTotalQuestionCount } from '@/lib/questions';
 import type { PacketId, PacketProgress } from '@/lib/types';
 
 function PacketStatusBadge({ progress }: { progress: PacketProgress }) {
@@ -219,9 +219,9 @@ export default function PilihPaketPage() {
         {/* Bottom info */}
         <div className="mt-10 bg-bg-secondary border border-sand-200 rounded-xl p-5 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="font-semibold text-text-primary text-sm">10 Paket × 12 Soal = 120 Soal Total</p>
+            <p className="font-semibold text-text-primary text-sm">{packetInfoList.length} Paket × 12 Soal = {getTotalQuestionCount()} Soal Total</p>
             <p className="text-xs text-text-muted mt-0.5">
-              Semua 10 paket tersedia · 120 soal siap dikerjakan
+              Semua {packetInfoList.length} paket tersedia · {getTotalQuestionCount()} soal siap dikerjakan
             </p>
           </div>
           <Link

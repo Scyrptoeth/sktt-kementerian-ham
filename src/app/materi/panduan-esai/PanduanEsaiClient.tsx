@@ -41,7 +41,7 @@ export default function PanduanEsaiClient() {
           <p className="text-text-secondary max-w-2xl leading-relaxed">{guide.subtitle}</p>
           <div className="flex flex-wrap gap-3 pt-2">
             <Link
-              href="/ujian/1/1"
+              href="/ujian"
               className="inline-flex items-center gap-2 bg-teal-soft-600 hover:bg-teal-soft-500 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors shadow-warm-sm text-sm"
             >
               Mulai Latihan Sekarang
@@ -272,7 +272,7 @@ export default function PanduanEsaiClient() {
                   Terapkan strategi di atas langsung dalam latihan soal nyata
                 </p>
                 <Link
-                  href="/ujian/1/1"
+                  href="/ujian"
                   className="inline-flex items-center gap-2 bg-teal-soft-600 hover:bg-teal-soft-500 text-white font-semibold px-6 py-3 rounded-xl transition-colors shadow-warm-sm text-sm"
                 >
                   Mulai Latihan Soal

@@ -47,7 +47,7 @@ export default function HomePage() {
 
           <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
             <Link
-              href="/ujian/1/1"
+              href="/ujian"
               className="inline-flex items-center gap-2 bg-teal-soft-600 hover:bg-teal-soft-500 text-white font-semibold px-8 py-4 rounded-xl transition-colors shadow-warm-md text-lg"
             >
               Mulai Paket Latihan

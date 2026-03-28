@@ -119,6 +119,12 @@ export default function HasilClient() {
           Ulangi Paket {packetId}
         </button>
         <Link
+          href="/ujian"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold border-2 border-teal-soft-300 text-teal-soft-600 bg-white hover:bg-teal-soft-50 transition-colors"
+        >
+          Pilih Paket Lain
+        </Link>
+        <Link
           href="/"
           className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold border-2 border-sand-300 text-text-primary bg-white hover:bg-bg-secondary transition-colors"
         >

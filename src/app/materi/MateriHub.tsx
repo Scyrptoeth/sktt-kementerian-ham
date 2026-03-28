@@ -74,7 +74,7 @@ export default function MateriHub() {
             </p>
           </div>
           <Link
-            href="/ujian/1/1"
+            href="/ujian"
             className="text-sm font-medium text-teal-soft-600 hover:text-teal-soft-500 transition-colors"
           >
             Langsung latihan →

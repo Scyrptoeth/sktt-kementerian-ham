@@ -64,7 +64,7 @@ export default function OgImage() {
 
         {/* Feature pills */}
         <div style={{ display: 'flex', gap: 16 }}>
-          {['7 Paket · 84 Soal', 'Esai + Scoring', 'Materi Lengkap'].map((label) => (
+          {['10 Paket · 120 Soal', 'Esai + Scoring', 'Materi Lengkap'].map((label) => (
             <div
               key={label}
               style={{

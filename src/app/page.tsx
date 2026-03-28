@@ -27,7 +27,7 @@ export default function HomePage() {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
-              7 Paket · 84 Soal
+              10 Paket · 120 Soal
             </div>
             <div className="flex items-center gap-2 text-sm text-text-secondary">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,8 +82,8 @@ export default function HomePage() {
 
             <ul className="space-y-2.5 flex-1">
               {[
-                '7 paket latihan tersedia',
-                '84 soal esai berbasis kasus nyata Indonesia',
+                '10 paket latihan tersedia',
+                '120 soal esai berbasis kasus nyata Indonesia',
                 'Skor otomatis dengan rubrik detail',
                 'Pembahasan + jawaban terbaik tiap soal',
                 'Timer 10 menit per soal',
@@ -191,7 +191,7 @@ export default function HomePage() {
               </div>
               <ol className="space-y-2.5 text-sm text-text-secondary list-none">
                 {[
-                  'Buka halaman Latihan Soal, pilih salah satu dari 7 paket',
+                  'Buka halaman Latihan Soal, pilih salah satu dari 10 paket',
                   'Kerjakan 12 soal esai dalam paket tersebut (10 menit per soal)',
                   'Setelah selesai, lihat skor dan jawaban terbaik per soal',
                   'Pelajari materi untuk topik yang skornya rendah agar nilai meningkat',

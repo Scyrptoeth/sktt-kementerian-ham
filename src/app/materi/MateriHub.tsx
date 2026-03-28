@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { questions } from '@/lib/questions';
+import { materials } from '@/lib/materials';
 import TopicTag from '@/components/TopicTag';
 
-// Format indicators — visual only, tracking in Part 3
+// Format indicators — visual only
 const FORMATS = ['Penjelasan', 'Flashcard', 'Panduan Esai', 'Glosarium', 'Ringkasan'];
-const PART1_TOPICS = new Set([1, 2, 3, 4, 5, 6]);
 
 export default function MateriHub() {
   return (
@@ -70,7 +70,7 @@ export default function MateriHub() {
           <div>
             <h2 className="text-xl font-bold text-text-primary">12 Topik Materi</h2>
             <p className="text-sm text-text-muted mt-1">
-              Topik 1–6 tersedia sekarang · Topik 7–12 segera hadir
+              Semua 12 topik tersedia dengan 5 format pembelajaran
             </p>
           </div>
           <Link
@@ -83,7 +83,7 @@ export default function MateriHub() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {questions.map((q) => {
-            const available = PART1_TOPICS.has(q.topicNumber);
+            const available = materials.some((m) => m.topicNumber === q.topicNumber);
             return (
               <div
                 key={q.id}

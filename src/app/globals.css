@@ -17,6 +17,7 @@
   --color-sage-400: #8FAD8C;
   --color-sage-500: #6B9B68;
   --color-sage-600: #4A7A47;
+  --color-sage-700: #3A6137;
 
   /* Rose Dust */
   --color-rose-dust-50:  #FAF4F4;
@@ -25,6 +26,8 @@
   --color-rose-dust-300: #D4A5A5;
   --color-rose-dust-400: #C08080;
   --color-rose-dust-500: #A85E5E;
+  --color-rose-dust-600: #8F4A4A;
+  --color-rose-dust-700: #7A3C3C;
 
   /* Sand */
   --color-sand-50:  #FAF7F2;
@@ -33,6 +36,8 @@
   --color-sand-300: #E8D5B7;
   --color-sand-400: #D4BA8A;
   --color-sand-500: #B8975A;
+  --color-sand-600: #9B7940;
+  --color-sand-700: #7E612E;
 
   /* Lavender */
   --color-lavender-100: #EDE8F5;
@@ -48,6 +53,7 @@
   --color-teal-soft-400: #7AADA4;
   --color-teal-soft-500: #4E8F85;
   --color-teal-soft-600: #3B7269;
+  --color-teal-soft-700: #2B5C54;
 
   /* Text */
   --color-text-primary:   #2D2D2D;

@@ -252,7 +252,7 @@ export default function TopicMateriClient({
                   </p>
                 </div>
                 <Link
-                  href={`/ujian/${topicNumber}`}
+                  href={`/ujian/1/${topicNumber}`}
                   className="inline-flex items-center gap-2 bg-teal-soft-600 hover:bg-teal-soft-500 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors shadow-warm-sm text-sm flex-shrink-0"
                 >
                   Latihan Soal Topik Ini

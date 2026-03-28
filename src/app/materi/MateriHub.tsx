@@ -74,7 +74,7 @@ export default function MateriHub() {
             </p>
           </div>
           <Link
-            href="/ujian/1"
+            href="/ujian/1/1"
             className="text-sm font-medium text-teal-soft-600 hover:text-teal-soft-500 transition-colors"
           >
             Langsung latihan →
@@ -137,7 +137,7 @@ export default function MateriHub() {
                       Pelajari Materi
                     </Link>
                     <Link
-                      href={`/ujian/${q.topicNumber}`}
+                      href={`/ujian/1/${q.topicNumber}`}
                       className="flex-1 text-center text-xs font-medium bg-bg-card hover:bg-sand-100 text-text-secondary px-3 py-2 rounded-lg border border-sand-200 transition-colors"
                     >
                       Latihan Soal

@@ -1,30 +1,11 @@
-import { notFound } from 'next/navigation';
-import { questions } from '@/lib/questions';
-import UjianClient from './UjianClient';
+import { redirect } from 'next/navigation';
 
 interface Props {
   params: Promise<{ nomor: string }>;
 }
 
-export default async function UjianPage({ params }: Props) {
+export default async function LegacyUjianPage({ params }: Props) {
   const { nomor } = await params;
-  const questionNumber = parseInt(nomor, 10);
-
-  if (
-    isNaN(questionNumber) ||
-    questionNumber < 1 ||
-    questionNumber > questions.length
-  ) {
-    notFound();
-  }
-
-  const question = questions[questionNumber - 1];
-
-  return <UjianClient question={question} questionNumber={questionNumber} />;
-}
-
-export function generateStaticParams() {
-  return questions.map((q) => ({
-    nomor: String(q.topicNumber),
-  }));
+  // Redirect old URLs (/ujian/3) to paket 1 equivalent (/ujian/1/3)
+  redirect(`/ujian/1/${nomor}`);
 }

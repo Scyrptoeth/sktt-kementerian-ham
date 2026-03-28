@@ -47,7 +47,7 @@ export default function HomePage() {
 
           <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
             <Link
-              href="/ujian/1"
+              href="/ujian/1/1"
               className="inline-flex items-center gap-2 bg-teal-soft-600 hover:bg-teal-soft-500 text-white font-semibold px-8 py-4 rounded-xl transition-colors shadow-warm-md text-lg"
             >
               Mulai Paket Latihan
@@ -101,7 +101,7 @@ export default function HomePage() {
                   Pelajari Materi
                 </Link>
                 <Link
-                  href={`/ujian/${q.topicNumber}`}
+                  href={`/ujian/1/${q.topicNumber}`}
                   className="flex-1 text-center text-xs font-medium bg-bg-card hover:bg-sand-100 text-text-secondary px-3 py-2 rounded-lg border border-sand-200 transition-colors"
                 >
                   Latihan Soal

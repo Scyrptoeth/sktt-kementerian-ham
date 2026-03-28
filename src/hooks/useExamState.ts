@@ -1,23 +1,25 @@
 'use client';
 import { useExam } from '@/context/ExamContext';
-import { questions } from '@/lib/questions';
+import { getPacketQuestions } from '@/lib/questions';
 import { scoreAnswer } from '@/lib/scoring';
-import { Answer, ScoreResult } from '@/lib/types';
+import { Answer, PacketId, ScoreResult } from '@/lib/types';
 
-export function useExamState() {
+export function useExamState(packetId: PacketId = 1) {
   const exam = useExam();
+  const packetProgress = exam.getPacketProgress(packetId);
+  const packetQuestions = getPacketQuestions(packetId);
 
-  const totalQuestions = questions.length;
-  const answeredCount = exam.state.answers.length;
+  const totalQuestions = packetQuestions.length;
+  const answeredCount = packetProgress.answers.length;
   const progressPercent = Math.round((answeredCount / totalQuestions) * 100);
 
   const getAnswerForQuestion = (questionId: number): Answer | undefined => {
-    return exam.state.answers.find((a) => a.questionId === questionId);
+    return packetProgress.answers.find((a) => a.questionId === questionId);
   };
 
   const getAllScoreResults = (): ScoreResult[] => {
-    return exam.state.answers.map((answer) => {
-      const question = questions.find((q) => q.id === answer.questionId);
+    return packetProgress.answers.map((answer) => {
+      const question = packetQuestions.find((q) => q.id === answer.questionId);
       if (!question) {
         return {
           questionId: answer.questionId,
@@ -37,12 +39,10 @@ export function useExamState() {
   };
 
   const getTotalScore = (): number => {
-    return exam.state.answers.reduce((sum, a) => sum + a.score, 0);
+    return packetProgress.answers.reduce((sum, a) => sum + a.score, 0);
   };
 
-  const getMaxPossibleScore = (): number => {
-    return totalQuestions * 5;
-  };
+  const getMaxPossibleScore = (): number => totalQuestions * 5;
 
   const getOverallPercentage = (): number => {
     const max = getMaxPossibleScore();
@@ -50,8 +50,21 @@ export function useExamState() {
     return Math.round((getTotalScore() / max) * 100);
   };
 
+  const resetExam = () => exam.resetPacket(packetId);
+
+  // Expose a backward-compatible state shape for components that read state.status / state.answers
+  const state = {
+    status: packetProgress.status,
+    currentQuestionIndex: packetProgress.currentQuestionIndex,
+    answers: packetProgress.answers,
+    startedAt: packetProgress.startedAt,
+    completedAt: packetProgress.completedAt,
+  };
+
   return {
-    ...exam,
+    state,
+    packetQuestions,
+    resetExam,
     totalQuestions,
     answeredCount,
     progressPercent,

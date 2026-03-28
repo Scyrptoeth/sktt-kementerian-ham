@@ -1,24 +1,29 @@
 'use client';
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useExamState } from '@/hooks/useExamState';
-import { questions } from '@/lib/questions';
 import { getScoreLabel } from '@/lib/scoring';
+import type { PacketId } from '@/lib/types';
 import ScoreCard from '@/components/ScoreCard';
 import BestAnswer from '@/components/BestAnswer';
 import TopicTag from '@/components/TopicTag';
 
 export default function HasilClient() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const rawPaket = searchParams.get('paket');
+  const packetId = (rawPaket ? parseInt(rawPaket, 10) : 1) as PacketId;
+
   const {
     state,
+    packetQuestions,
     resetExam,
     getAllScoreResults,
     getTotalScore,
     getMaxPossibleScore,
     getOverallPercentage,
-  } = useExamState();
+  } = useExamState(packetId);
 
   useEffect(() => {
     if (state.status === 'idle') {
@@ -62,7 +67,7 @@ export default function HasilClient() {
 
   const handleReset = () => {
     resetExam();
-    router.push('/ujian/1');
+    router.push(`/ujian/${packetId}/1`);
   };
 
   return (
@@ -74,7 +79,7 @@ export default function HasilClient() {
       >
         <div className="max-w-3xl mx-auto text-center space-y-4">
           <p className="text-sm text-text-secondary font-medium">SKTT Kementerian HAM — Hasil Latihan</p>
-          <h1 className="text-2xl font-bold text-text-primary">Paket Latihan Selesai</h1>
+          <h1 className="text-2xl font-bold text-text-primary">Paket {packetId} Selesai</h1>
 
           {/* Score Circle */}
           <div
@@ -111,7 +116,7 @@ export default function HasilClient() {
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
-          Ulangi Paket
+          Ulangi Paket {packetId}
         </button>
         <Link
           href="/"
@@ -127,7 +132,7 @@ export default function HasilClient() {
           Detail Per Soal
         </h2>
 
-        {questions.map((question, index) => {
+        {packetQuestions.map((question, index) => {
           const result = results.find(r => r.questionId === question.id);
           const userAnswer = state.answers.find(a => a.questionId === question.id);
 

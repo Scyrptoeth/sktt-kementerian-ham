@@ -6,10 +6,12 @@ import { useExam } from '@/context/ExamContext';
 
 export default function GlobalNav() {
   const pathname = usePathname();
-  const { state } = useExam();
+  const { state, getPacketProgress } = useExam();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const isCompleted = state.status === 'completed';
+  const isCompleted =
+    state.activePacketId !== null &&
+    getPacketProgress(state.activePacketId).status === 'completed';
 
   const links = [
     { href: '/', label: 'Beranda', matchExact: true },

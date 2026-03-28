@@ -2,9 +2,8 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Question } from '@/lib/types';
+import { Question, PacketId } from '@/lib/types';
 import { useExam } from '@/context/ExamContext';
-import { questions } from '@/lib/questions';
 import { scoreAnswer } from '@/lib/scoring';
 import { useTimer } from '@/hooks/useTimer';
 import Timer from '@/components/Timer';
@@ -15,6 +14,8 @@ import TopicTag from '@/components/TopicTag';
 interface UjianClientProps {
   question: Question;
   questionNumber: number;
+  packetId: PacketId;
+  totalQuestions: number;
 }
 
 type QuestionPhase = 'answering' | 'reviewed';
@@ -62,23 +63,24 @@ function ScoreBadge({ score }: { score: number }) {
   );
 }
 
-export default function UjianClient({ question, questionNumber }: UjianClientProps) {
+export default function UjianClient({ question, questionNumber, packetId, totalQuestions }: UjianClientProps) {
   const router = useRouter();
-  const { state, submitAnswer, nextQuestion, startExam } = useExam();
+  const { startExam, submitAnswer, nextQuestion, getPacketProgress } = useExam();
   const [answerText, setAnswerText] = useState('');
   const [questionPhase, setQuestionPhase] = useState<QuestionPhase>('answering');
   const [submittedScore, setSubmittedScore] = useState<number>(0);
   const [frozenTimeLeft, setFrozenTimeLeft] = useState<number | null>(null);
 
-  const isLastQuestion = questionNumber === questions.length;
+  const isLastQuestion = questionNumber === totalQuestions;
+  const packetProgress = getPacketProgress(packetId);
 
   // Sync exam state when navigating to this question
   useEffect(() => {
-    if (state.status === 'idle') {
-      startExam();
+    if (packetProgress.status === 'idle') {
+      startExam(packetId);
     }
     // Reset phase for new question
-    const existingAnswer = state.answers.find((a) => a.questionId === question.id);
+    const existingAnswer = packetProgress.answers.find((a) => a.questionId === question.id);
     if (existingAnswer) {
       setAnswerText(existingAnswer.text);
       setSubmittedScore(existingAnswer.score);
@@ -106,11 +108,11 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
       };
       const scored = scoreAnswer(draftAnswer, question);
 
-      submitAnswer(answerText, isAuto);
+      submitAnswer(packetId, answerText, isAuto);
       setSubmittedScore(scored.score);
       setQuestionPhase('reviewed');
     },
-    [questionPhase, answerText, submitAnswer, question]
+    [questionPhase, answerText, submitAnswer, packetId, question]
   );
 
   const handleExpire = useCallback(() => {
@@ -150,13 +152,13 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
   }, [questionPhase, answerText]);
 
   const handleNext = useCallback(() => {
-    nextQuestion();
+    nextQuestion(packetId);
     if (isLastQuestion) {
-      router.push('/hasil');
+      router.push(`/hasil?paket=${packetId}`);
     } else {
-      router.push(`/ujian/${questionNumber + 1}`);
+      router.push(`/ujian/${packetId}/${questionNumber + 1}`);
     }
-  }, [nextQuestion, isLastQuestion, router, questionNumber]);
+  }, [nextQuestion, packetId, isLastQuestion, router, questionNumber]);
 
   const displayTimeLeft = questionPhase === 'reviewed' ? (frozenTimeLeft ?? timeLeft) : timeLeft;
 
@@ -170,7 +172,7 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
               <p className="text-xs font-medium text-text-muted">
                 SKTT Kementerian HAM
               </p>
-              <h1 className="font-bold text-lg text-text-primary">Paket Latihan</h1>
+              <h1 className="font-bold text-lg text-text-primary">Paket {packetId}</h1>
             </div>
           </div>
           {questionPhase === 'answering' ? (
@@ -207,7 +209,7 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
 
       <main id="main-content" className="flex-1 max-w-3xl mx-auto w-full px-4 py-6 space-y-6">
         {/* Progress */}
-        <ProgressBar current={questionNumber} total={questions.length} />
+        <ProgressBar current={questionNumber} total={totalQuestions} />
 
         {/* Question Card */}
         <div className="bg-white rounded-xl border border-sand-200 shadow-warm-sm overflow-hidden">

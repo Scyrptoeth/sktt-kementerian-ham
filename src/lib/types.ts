@@ -66,6 +66,33 @@ export interface TopicMaterial {
   essayGuide: EssayGuide;
   infographic: InfographicData;
   relatedQuestionId: number;
+  relatedQuestionIds?: Record<PacketId, number>; // mapping per paket
+}
+
+// ─── Multi-Packet System ──────────────────────────────────────────────────────
+
+export type PacketId = 1 | 2 | 3 | 4 | 5;
+
+export interface PacketInfo {
+  id: PacketId;
+  name: string;
+  description: string;
+  questionCount: number;
+  isAvailable: boolean;
+}
+
+export interface PacketProgress {
+  packetId: PacketId;
+  status: 'idle' | 'active' | 'completed';
+  currentQuestionIndex: number;
+  answers: Answer[];
+  startedAt: Date | null;
+  completedAt: Date | null;
+}
+
+export interface MultiPacketExamState {
+  activePacketId: PacketId | null;
+  packets: Record<PacketId, PacketProgress>;
 }
 
 export interface TextSection {

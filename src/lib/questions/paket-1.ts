@@ -1,6 +1,6 @@
-import { Question } from './types';
+import { Question } from '../types';
 
-export const questions: Question[] = [
+export const paket1Questions: Question[] = [
   {
     id: 1,
     topicNumber: 1,

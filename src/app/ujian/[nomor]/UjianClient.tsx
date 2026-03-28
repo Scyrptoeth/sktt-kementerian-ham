@@ -312,6 +312,28 @@ export default function UjianClient({ question, questionNumber }: UjianClientPro
                   </div>
                 </div>
 
+                {/* Materi link */}
+                {submittedScore <= 3 && (
+                  <div className="flex items-center gap-3 bg-teal-soft-50 border border-teal-soft-200 rounded-xl px-4 py-3">
+                    <span className="text-lg">📖</span>
+                    <div className="flex-1 text-sm">
+                      <span className="text-text-secondary">
+                        {question.isEnglish
+                          ? 'Want to strengthen your understanding? '
+                          : 'Ingin memperdalam pemahaman? '}
+                      </span>
+                      <Link
+                        href={`/materi/${question.topicNumber}`}
+                        className="text-teal-soft-600 font-medium hover:underline"
+                      >
+                        {question.isEnglish
+                          ? 'Study the material for this topic →'
+                          : 'Pelajari materi topik ini →'}
+                      </Link>
+                    </div>
+                  </div>
+                )}
+
                 {/* Next Button */}
                 <div className="flex justify-end pt-2">
                   <button

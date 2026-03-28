@@ -199,6 +199,20 @@ export default function HasilClient() {
                   </span>
                 </div>
 
+                {/* Materi link for low scores */}
+                {result.score <= 3 && (
+                  <Link
+                    href={`/materi/${question.topicNumber}`}
+                    className="flex items-center gap-2.5 bg-teal-soft-50 border border-teal-soft-200 rounded-lg px-4 py-2.5 text-sm hover:bg-teal-soft-100 transition-colors"
+                  >
+                    <span>📖</span>
+                    <span className="text-text-secondary">
+                      Pelajari materi topik ini untuk meningkatkan pemahaman
+                    </span>
+                    <span className="text-teal-soft-600 font-medium ml-auto flex-shrink-0">Belajar →</span>
+                  </Link>
+                )}
+
                 {/* Best Answer Comparison */}
                 <BestAnswer
                   question={question}

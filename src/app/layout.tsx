@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ExamProvider } from "@/context/ExamContext";
+import GlobalNav from "@/components/GlobalNav";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -31,7 +32,10 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${dmSans.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-bg-primary text-text-primary font-sans">
-        <ExamProvider>{children}</ExamProvider>
+        <ExamProvider>
+          <GlobalNav />
+          {children}
+        </ExamProvider>
       </body>
     </html>
   );

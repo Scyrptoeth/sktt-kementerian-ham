@@ -45,7 +45,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="pt-4">
+          <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/ujian/1"
               className="inline-flex items-center gap-2 bg-teal-soft-600 hover:bg-teal-soft-500 text-white font-semibold px-8 py-4 rounded-xl transition-colors shadow-warm-md text-lg"
@@ -54,6 +54,12 @@ export default function HomePage() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
+            </Link>
+            <Link
+              href="/materi"
+              className="inline-flex items-center gap-2 bg-bg-secondary hover:bg-bg-card text-text-secondary font-semibold px-6 py-4 rounded-xl transition-colors border border-sand-200 text-lg"
+            >
+              Pelajari Materi Dulu
             </Link>
           </div>
         </div>
@@ -81,9 +87,25 @@ export default function HomePage() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-text-primary leading-snug">
+                <h3 className="font-semibold text-text-primary leading-snug text-sm">
                   {q.topicName}
                 </h3>
+              </div>
+
+              {/* Dual action buttons */}
+              <div className="flex gap-2 pt-1">
+                <Link
+                  href={`/materi/${q.topicNumber}`}
+                  className="flex-1 text-center text-xs font-medium bg-teal-soft-100 hover:bg-teal-soft-200 text-teal-soft-600 px-3 py-2 rounded-lg transition-colors"
+                >
+                  Pelajari Materi
+                </Link>
+                <Link
+                  href={`/ujian/${q.topicNumber}`}
+                  className="flex-1 text-center text-xs font-medium bg-bg-card hover:bg-sand-100 text-text-secondary px-3 py-2 rounded-lg border border-sand-200 transition-colors"
+                >
+                  Latihan Soal
+                </Link>
               </div>
             </div>
           ))}

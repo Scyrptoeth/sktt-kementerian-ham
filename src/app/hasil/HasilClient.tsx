@@ -27,7 +27,7 @@ export default function HasilClient() {
 
   useEffect(() => {
     if (state.status === 'idle') {
-      router.replace('/');
+      router.replace('/ujian');
     }
   }, [state.status, router]);
 

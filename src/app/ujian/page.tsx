@@ -221,7 +221,7 @@ export default function PilihPaketPage() {
           <div>
             <p className="font-semibold text-text-primary text-sm">5 Paket × 12 Soal = 60 Soal Total</p>
             <p className="text-xs text-text-muted mt-0.5">
-              Saat ini 1 paket tersedia · 4 paket segera hadir
+              Semua 5 paket tersedia · 60 soal siap dikerjakan
             </p>
           </div>
           <Link
